@@ -1,7 +1,10 @@
+import { PrismaService } from "@/prisma/prisma.service";
 import { Injectable } from "@nestjs/common";
 
-@Injectable({})
+@Injectable()
 export class AuthService {
+  // eslint-disable-next-line prettier/prettier
+  constructor(private prisma: PrismaService) {}
   signup() {
     return { messege: "I have Signed up" };
   }

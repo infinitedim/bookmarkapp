@@ -464,4 +464,7 @@ $RECYCLE.BIN/
 # and uncomment the following lines
 # .pnp.*
 
+# custom ignore
+*/migrations/
+
 # End of https://www.toptal.com/developers/gitignore/api/node,git,yarn,linux,macos,windows,webstorm+all,jetbrains+all,sublimetext,vim,visualstudiocode,dotenv
