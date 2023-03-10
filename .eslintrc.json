@@ -7,7 +7,14 @@
   },
   "extends": [
     "plugin:@typescript-eslint/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "standard-with-typescript"
+  ],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@typescript-eslint/recommended"]
+    }
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -19,12 +26,17 @@
   "rules": {
     "quotes": [2, "double"],
     "semi": [2, "always"],
+    "indent": 0,
+    "comma-dangle": 0,
     "@typescript-eslint/quotes": [2, "double"],
     "@typescript-eslint/semi": [2, "always"],
+    "@typescript-eslint/indent": 0,
+    "@typescript-eslint/comma-dangle": 0,
     "@typescript-eslint/interface-name-prefix": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/explicit-module-boundary-types": 0,
     "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/space-before-function-paren": 0,
     "prettier/prettier": [
       2,
       {
