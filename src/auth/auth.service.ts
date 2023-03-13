@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-  ForbiddenException,
+  BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from "@nestjs/common";
 import * as argon from "argon2";
 import type { User } from "@prisma/client";
@@ -10,7 +12,7 @@ import { PrismaService } from "@/prisma";
 
 @Injectable()
 export class AuthService {
-  // eslint-disable-next-line prettier/prettier, no-useless-constructor
+  // eslint-disable-next-line prettier/prettier
   constructor(private readonly prisma: PrismaService) {}
 
   async signup(dto: AuthDTO): Promise<User> {
@@ -23,11 +25,11 @@ export class AuthService {
         },
       });
 
-      // delete user.hash;
+      delete (user as any).hash;
 
       return user;
     } catch (error) {
-      throw new ForbiddenException("Email has been registered");
+      throw new BadRequestException("Email has been registered");
     }
   }
 
@@ -38,13 +40,14 @@ export class AuthService {
       },
     });
 
-    if (user == null) throw new NotFoundException("Account not found");
+    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+    if (!user) throw new NotFoundException("Account not found");
 
     const passwordMatcher = await argon.verify(user.hash, dto.password);
 
-    if (!passwordMatcher) throw new ForbiddenException("Password Incorrect");
+    if (!passwordMatcher) throw new UnauthorizedException("Password Incorrect");
 
-    // delete user.hash;
+    delete (user as any).hash;
 
     return user;
   }

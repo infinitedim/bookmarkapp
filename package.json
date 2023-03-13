@@ -21,15 +21,15 @@
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "prepare": "husky install",
     "commit": "git add . && cz",
-    "push": "yarn commit && git push origin main",
-    "prisma:deploy": "npx prisma migrate deploy",
+    "push": "npm run commit && git push origin main",
+    "prisma:deploy": "prisma migrate deploy",
     "db:rm": "docker compose rm dev-db -s -f -v",
     "db:up": "docker compose up dev-db -d",
-    "db:restart": "yarn db:rm && yarn db:up && sleep 1 && yarn prisma:deploy"
+    "db:restart": "npm run db:rm && npm run db:up && sleep 1 && npm run prisma:deploy"
   },
   "lint-staged": {
-    "**/*.{html,css,scss,less,json,js,jsx,ts,tsx,md,mdx}\"": [
-      "prettier --config .prettierrc.json --write \"**/*.{html,css,scss,less,json,js,jsx,ts,tsx,md,mdx}\""
+    "**/*.{json,ts,}\"": [
+      "prettier --config .prettierrc.json --write \"{src,apps,libs,test}/**/*.{json,ts}\""
     ]
   },
   "config": {
@@ -61,10 +61,10 @@
     "argon2": "^0.30.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
+    "helmet": "^6.0.1",
     "module-alias": "^2.2.2",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
-    "passport-local": "^1.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },
@@ -76,7 +76,6 @@
     "@types/jest": "29.2.4",
     "@types/node": "18.11.18",
     "@types/passport-jwt": "^3.0.8",
-    "@types/passport-local": "^1.0.35",
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",

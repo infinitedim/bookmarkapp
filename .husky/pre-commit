@@ -5,7 +5,7 @@ echo 'RUNNING GIT HOOKS'
 
 echo 'Checking Validity Of Types'
 
-yarn type-check || (
+npm run type-check || (
     echo '⛔️ There is a TYPE ERROR on your code, please fix it and do commit again ⛔️';
     false;
 )
@@ -15,7 +15,7 @@ echo 'No Type Error ✅'
 echo 'Running linter'
 
 # Check ESLint Standards
-yarn lint ||
+npm run lint ||
 (
     echo '⛔️ There is an ESLINT ERROR on your code, please fix it and do commit again ⛔️';
     false;
