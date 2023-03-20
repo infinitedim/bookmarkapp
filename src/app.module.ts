@@ -13,7 +13,7 @@ import { ConfigModule } from "@nestjs/config";
     UserModule,
     BookmarkModule,
     PrismaModule,
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env.development" }),
+    ConfigModule.forRoot({ isGlobal: true }),
   ],
   controllers: [AppController],
   providers: [AppService],
