@@ -1,13 +1,13 @@
 version: '3.8'
 services:
-  dev-db:
+  learn-nestjs:
     image: 'postgres:13'
     ports:
       - '5434:5432'
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 123
-      POSTGRES_DB: nest
+      POSTGRES_USER: infinitedim
+      POSTGRES_PASSWORD: 40027020
+      POSTGRES_DB: bookmarkapp
     networks:
       - infinitedim
 networks:

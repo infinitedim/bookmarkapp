@@ -3,19 +3,18 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from "@nestjs/common";
 import * as argon from "argon2";
-import type { User } from "@prisma/client";
 import type { AuthDTO } from "@/classes";
 import { PrismaService } from "@/prisma";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
   // eslint-disable-next-line prettier/prettier
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService, private readonly jwt: JwtService) { }
 
-  async signup(dto: AuthDTO): Promise<User> {
+  async signup(dto: AuthDTO) {
     const hash = await argon.hash(dto.password);
     try {
       const user = await this.prisma.user.create({
@@ -25,15 +24,13 @@ export class AuthService {
         },
       });
 
-      delete (user as any).hash;
-
-      return user;
+      return await this.signToken(user.id, user.email);
     } catch (error) {
       throw new BadRequestException("Email has been registered");
     }
   }
 
-  async signin(dto: AuthDTO): Promise<User> {
+  async signin(dto: AuthDTO) {
     const user = await this.prisma.user.findUnique({
       where: {
         email: dto.email,
@@ -45,10 +42,21 @@ export class AuthService {
 
     const passwordMatcher = await argon.verify(user.hash, dto.password);
 
-    if (!passwordMatcher) throw new UnauthorizedException("Password Incorrect");
+    if (!passwordMatcher) throw new BadRequestException("Password Incorrect");
 
-    delete (user as any).hash;
+    return await this.signToken(user.id, user.email);
+  }
 
-    return user;
+  async signToken(userId: number, email: string) {
+    const payload = { sub: userId, email };
+
+    const token = await this.jwt.signAsync(payload, {
+      expiresIn: "3d",
+      secret: process.env.SECRET_TOKEN,
+    });
+
+    return {
+      access_token: token,
+    };
   }
 }

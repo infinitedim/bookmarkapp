@@ -1,15 +1,15 @@
 {
-  "name": "nestjs-learn",
+  "name": "bookmarkapp",
   "version": "0.0.1",
   "description": "nestjs rest, learn by make rest api",
   "author": "Dimas saputra",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
+    "dev:studio": "prisma studio",
     "debug": "nest start --debug --watch",
     "prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
@@ -21,11 +21,12 @@
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "prepare": "husky install",
     "commit": "git add . && cz",
-    "push": "npm run commit && git push origin main",
-    "prisma:deploy": "prisma migrate deploy",
-    "db:rm": "docker compose rm dev-db -s -f -v",
-    "db:up": "docker compose up dev-db -d",
-    "db:restart": "npm run db:rm && npm run db:up && sleep 1 && npm run prisma:deploy"
+    "push": "yarn commit && git push origin main",
+    "migrate:deploy": "prisma migrate deploy",
+    "db:rm": "docker compose rm learn-nestjs -s -f -v",
+    "db:up": "docker compose up -d",
+    "db:list": "docker ps",
+    "db:restart": "yarn db:rm && yarn db:up && sleep 1 && yarn migrate:deploy"
   },
   "lint-staged": {
     "**/*.{json,ts,}\"": [
@@ -49,6 +50,26 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "_moduleAliases": {
+    "@": "./dist"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
@@ -101,25 +122,5 @@
     "tsconfig-paths": "4.1.1",
     "typescript": "^4.7.4",
     "webpack": "^5.76.0"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node",
-    "_moduleAliases": {
-      "@": "./dist"
-    }
   }
 }

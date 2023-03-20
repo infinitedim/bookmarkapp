@@ -13,10 +13,10 @@ import { ConfigModule } from "@nestjs/config";
     UserModule,
     BookmarkModule,
     PrismaModule,
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: ".env.development" }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 // eslint-disable-next-line prettier/prettier
-export class AppModule {}
+export class AppModule { }
